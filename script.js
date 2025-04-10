@@ -9,10 +9,57 @@ let isInitialLoad = true;
 
 
 //Unsplash API
-const count = 10;
-const apiKey = '';
-const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
+let initialCount = 5; // first time it loades 5 images then 30
+const apiKey = 'h0cOsu3FJYRAAiB-aaRWDEs7ITW19vLYz_Lc28daHRw';
+const type = 'landscape';
+let apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${initialCount}&orientation=${type}`;
 
+function updateApiWithNewCount (picCount){
+    apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${picCount}&orientation=${type}`;
+}
+
+//Check if all images were loaded
+function imageLoaded(){
+    imagesLoaded++;
+    if(imagesLoaded === totalImages){
+        ready = true;
+        loader.hidden = true;
+        imagesLoaded = 0;
+    }
+}
+//Helper Funtion to set attributes on DOM Elements
+function setAttributes(element, attributes){
+    for(const key in attributes){
+        element.setAttribute(key, attributes[key]);
+    }
+}
+
+//Display photos, add to the DOM
+function displayPhotos(){
+    //imagesLoaded = 0;
+    totalImages = photosArray.length;
+    //Run function foreach
+    photosArray.forEach((photo) => {
+        // Create <a> to link to Unsplash
+        const item = document.createElement('a');
+        setAttributes(item, {
+            href: photo.links.html,
+            target: '_blank'
+        });
+        //Create <img>
+        const img = document.createElement('img');
+        setAttributes(img, {
+            src: photo.urls.regular,
+            alt: photo.alt_description,
+            title: photo.alt_description
+        });
+        // Event Listener, check when each is finished loading
+        img.addEventListener('load', imageLoaded);
+        //Put img inside a , put both inside imageContainer
+        item.appendChild(img);
+        imageContainer.appendChild(item);
+    });
+}
 //Get fotos Unsplash Api
 async function getFotos(){
     try {
@@ -42,3 +89,6 @@ window.addEventListener('scroll', () => {
 
 //On load
 getFotos();
+
+
+//DRY code dont repeat yourself
