@@ -10,7 +10,7 @@ let isInitialLoad = true;
 
 //Unsplash API
 let initialCount = 5; // first time it loades 5 images then 30
-const apiKey = 'h0cOsu3FJYRAAiB-aaRWDEs7ITW19vLYz_Lc28daHRw';
+const apiKey = '';
 const type = 'landscape';
 let apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${initialCount}&orientation=${type}`;
 
